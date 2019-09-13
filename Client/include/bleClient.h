@@ -30,13 +30,14 @@ static void notifyCallback(
 
 bool bleConnectToServer()
 {
-  BLEDevice::init("");
-  //  pServerAddress = new BLEAddress("80:7d:3a:c5:6a:36");
-  pServerAddress = new BLEAddress("24:0A:C4:0A:3C:62"); // display-less TTGO
+  BLEDevice::init("Trip Advisor Client");
+  pServerAddress = new BLEAddress("80:7D:3A:C5:6A:36");
   delay(200);
   BLEClient *pClient = BLEDevice::createClient();
+  Serial.printf("Client created..\n");
   pClient->setClientCallbacks(new MyClientCallback());
   pClient->connect(*pServerAddress);
+  Serial.printf("Connecting..\n");
   delay(500);
   BLERemoteService *pRemoteService = pClient->getService(SERVICE_UUID);
   pRemoteCharacteristic = pRemoteService->getCharacteristic(CHARACTERISTIC_UUID);
