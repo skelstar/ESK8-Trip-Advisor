@@ -16,6 +16,13 @@
 #define LED_ON HIGH
 #define LED_OFF LOW
 
+// M5Stick
+#define BLUE_LED_PIN  19
+#define BUZZER_PIN    26
+#define BUTTON_PIN    35
+#define GROVE_SCL     13
+#define GROVE_SDA     25
+// 9-Axis posture sentsor: MPU9250	SCL(22)	SDA(23)
 /* ---------------------------------------------- */
 
 static boolean serverConnected = false;
@@ -356,6 +363,22 @@ void pureDeepSleep()
   Serial.println("This will never be printed");
 }
 
+bool mpu9250_exis = false;
+void mpu9250_test() {
+    uint8_t data = 0;
+    Wire.beginTransmission(0x68);         
+    Wire.write(0x75);                     
+    Wire.endTransmission(true);
+    Wire.requestFrom(0x68, 1);  
+    data = Wire.read();                   
+
+    Serial.print("mpu9250 addr: ");
+    Serial.println(data, HEX);
+    if(data == 0x71) {
+        mpu9250_exis = true;
+    }
+}
+
 void setup()
 {
   // put your setup code here, to run once:
@@ -379,6 +402,8 @@ void setup()
     button.serviceEvents();
   }
   button.serviceEvents();
+
+   mpu9250_test();
 }
 
 void loop()
